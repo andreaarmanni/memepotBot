@@ -2,7 +2,7 @@ from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import CommandHandler, CallbackQueryHandler, Application
 import logging
 
-# Initialize logging
+# Set up logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 # Set your bot token
@@ -19,9 +19,18 @@ meme_counters = {
     'wolf': 0
 }
 
-total_steps = 1000000
+total_steps = 100  # Define the total number of steps for a memecoin to win
 
-# Game Start command handler
+# Progress bar settings
+bar_length = 20  # Number of characters in the progress bar
+
+def create_progress_bar(current_steps, total_steps, bar_length=20):
+    """Creates a progress bar based on the current steps and total steps."""
+    progress = int((current_steps / total_steps) * bar_length)  # Calculate progress as a percentage of the bar
+    bar = '█' * progress + '-' * (bar_length - progress)  # Create the progress bar string
+    return f"{bar} {current_steps}/{total_steps} steps"
+
+# Start command handler
 async def start_game(update, context):
     """Starts the game and shows the interactive buttons."""
     chat_id = update.message.chat_id
@@ -46,17 +55,19 @@ async def button_click(update: Update, context):
     meme_counters[meme] += 1  # Increment memecoin progress
     steps = meme_counters[meme]
 
-    # Show the current progress to the player
-    await query.answer(text=f"{meme.upper()} has gained {steps} votes.")
+    # Show the current progress to the player with the progress bar
+    progress_bar = create_progress_bar(steps, total_steps)
+    await query.answer(text=f"{meme.upper()} has gained {steps} votes.\n{progress_bar}")
 
-# Leaderboard command handler
+# Leaderboard command handler with progress bar
 async def leaderboard(update, context):
-    """Displays the leaderboard showing the total steps for each memecoin."""
+    """Displays the leaderboard showing the total steps and progress bar for each memecoin."""
     leaderboard_text = "🏆 Meme Coin Leaderboard 🏆\n\n"
     
-    # Iterate through each memecoin and display the progress
+    # Iterate through each memecoin and display the progress with a progress bar
     for meme, steps in meme_counters.items():
-        leaderboard_text += f"{meme.upper()}: {steps}/{total_steps} votes\n"
+        progress_bar = create_progress_bar(steps, total_steps)  # Generate progress bar for each memecoin
+        leaderboard_text += f"{meme.upper()}: {progress_bar}\n"
 
     # Send the leaderboard as a message
     await update.message.reply_text(leaderboard_text)
