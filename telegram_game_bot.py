@@ -73,7 +73,7 @@ async def button_click(update: Update, context):
 # Leaderboard command handler with progress bar
 async def leaderboard(update, context):
     """Displays the leaderboard showing the total steps and progress bar for each memecoin."""
-    leaderboard_text = "🏆 Meme Leaderboard 🏆\n\n"
+    leaderboard_text = "🏆 MEMES LEADERBOARD 🏆\n\n"
     
     # Iterate through each memecoin and display the progress with a progress bar
     for meme, steps in meme_counters.items():
@@ -86,7 +86,7 @@ async def leaderboard(update, context):
 # Players command handler to show player contributions with trophy emojis for top 3
 async def players(update, context):
     """Displays the total steps made by each player, with trophies for the top 3 players."""
-    players_text = "🚀Top Players🚀\n\n"
+    players_text = "🚀 TOP PLAYERS 🚀\n\n"
 
     # Check if there are any contributions yet
     if not player_contributions:
