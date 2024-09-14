@@ -13,7 +13,7 @@ backtrader==1.9.78.123
 beautifulsoup4==4.12.3
 bokeh==3.1.1
 cachetools==4.2.4
-cchardet==2.1.7
+cchardet==2.1.5
 cctx==1.0.0
 ccxt==4.2.74
 certifi==2024.2.2
