@@ -38,6 +38,9 @@ async def start_game(update, context):
     """Starts the game and shows the interactive buttons."""
     chat_id = update.message.chat_id
 
+  # Send a picture before the message
+    await context.bot.send_photo(chat_id=chat_id, photo='/Users/Andrea/Desktop/memepot/memepotBot/Assets/TG BANNER.jpg')  # Use URL or local file path
+
     # Create game buttons for players to interact
     keyboard = [
         [InlineKeyboardButton("BONK", callback_data='bonk')],
