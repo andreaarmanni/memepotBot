@@ -13,10 +13,16 @@ bot = Bot(token=bot_token)
 
 # Game data
 meme_counters = {
-    'bonk': 0,
-    'buddha': 0,
-    'wif': 0,
-    'wolf': 0
+    'tremp': 0,
+    'kama': 0,
+    'analos': 0,
+    'bome': 0,
+    'retardio': 0,
+    'neiro': 0,
+    'solama': 0,
+    'myro': 0,
+    'wolf': 0,
+    'daddy': 0,
 }
 
 total_steps = 1000  # Define the total number of steps for a memecoin to win
@@ -43,15 +49,21 @@ async def start_game(update, context):
 
     # Create game buttons for players to interact
     keyboard = [
-        [InlineKeyboardButton("BONK", callback_data='bonk')],
-        [InlineKeyboardButton("BUDDHA", callback_data='buddha')],
-        [InlineKeyboardButton("WIF", callback_data='wif')],
-        [InlineKeyboardButton("WOLF", callback_data='wolf')],
+        [InlineKeyboardButton("$TREMP", callback_data='tremp')],
+        [InlineKeyboardButton("$KAMA", callback_data='kama')],
+        [InlineKeyboardButton("$ANALOS", callback_data='analos')],
+        [InlineKeyboardButton("$BOME", callback_data='bome')],
+        [InlineKeyboardButton("$RETARDIO", callback_data='retardio')],
+        [InlineKeyboardButton("$NEIRO", callback_data='neiro')],
+        [InlineKeyboardButton("$SOLAMA", callback_data='solama')],
+        [InlineKeyboardButton("$MYRO", callback_data='myro')],
+        [InlineKeyboardButton("$WOLF", callback_data='wolf')],
+        [InlineKeyboardButton("$DADDY", callback_data='daddy')],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
 
     # Send the game interface to the player
-    await update.message.reply_text('Vote your favorite project. Win the race to get a $50,000 buyback and be the first to launch on memepot!🔥', reply_markup=reply_markup)
+    await update.message.reply_text("Missed the early pump? No worries, you will miss this too!🔥\n\nVote your favorite community, and the one with the most votes snags a $50,000 buyback plus the ultimate prize: being the FIRST to launch on Memepot!\n\nJump in now: t.me/memepotfun 🐸", reply_markup=reply_markup)
 
 # Callback query handler for memecoin clicks
 async def button_click(update: Update, context):
