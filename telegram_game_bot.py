@@ -49,6 +49,18 @@ async def button_click(update: Update, context):
     # Show the current progress to the player
     await query.answer(text=f"{meme.upper()} has gained {steps} votes.")
 
+# Leaderboard command handler
+async def leaderboard(update, context):
+    """Displays the leaderboard showing the total steps for each memecoin."""
+    leaderboard_text = "🏆 Meme Coin Leaderboard 🏆\n\n"
+    
+    # Iterate through each memecoin and display the progress
+    for meme, steps in meme_counters.items():
+        leaderboard_text += f"{meme.upper()}: {steps}/{total_steps} votes\n"
+
+    # Send the leaderboard as a message
+    await update.message.reply_text(leaderboard_text)
+
 # Main function to run the bot
 def main():
     # Initialize bot application
@@ -56,6 +68,7 @@ def main():
 
     # Register command handlers
     application.add_handler(CommandHandler('start', start_game))
+    application.add_handler(CommandHandler('leaderboard', leaderboard))  # Add the leaderboard command
     application.add_handler(CallbackQueryHandler(button_click))
 
     # Start polling to listen for incoming commands and game events
