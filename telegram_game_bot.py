@@ -19,7 +19,10 @@ meme_counters = {
     'wolf': 0
 }
 
-total_steps = 100  # Define the total number of steps for a memecoin to win
+total_steps = 1000  # Define the total number of steps for a memecoin to win
+
+# Dictionary to store player contributions (player handle -> total steps made)
+player_contributions = {}
 
 # Progress bar settings
 bar_length = 20  # Number of characters in the progress bar
@@ -52,17 +55,25 @@ async def button_click(update: Update, context):
     """Handles the memecoin button clicks to update progress."""
     query = update.callback_query
     meme = query.data  # The memecoin clicked
+    user = query.from_user  # The user who clicked
+
     meme_counters[meme] += 1  # Increment memecoin progress
-    steps = meme_counters[meme]
+
+    # Track player contributions
+    username = user.username if user.username else user.first_name  # Use username or first name if no handle
+    if username in player_contributions:
+        player_contributions[username] += 1  # Increment the player's total steps
+    else:
+        player_contributions[username] = 1  # Add the player with 1 step
 
     # Show the current progress to the player with the progress bar
-    progress_bar = create_progress_bar(steps, total_steps)
-    await query.answer(text=f"{meme.upper()} has gained {steps} votes.\n{progress_bar}")
+    progress_bar = create_progress_bar(meme_counters[meme], total_steps)
+    await query.answer(text=f"{meme.upper()} has gained {meme_counters[meme]} votes.\n{progress_bar}")
 
 # Leaderboard command handler with progress bar
 async def leaderboard(update, context):
     """Displays the leaderboard showing the total steps and progress bar for each memecoin."""
-    leaderboard_text = "🏆 Meme Coin Leaderboard 🏆\n\n"
+    leaderboard_text = "🏆 Meme Leaderboard 🏆\n\n"
     
     # Iterate through each memecoin and display the progress with a progress bar
     for meme, steps in meme_counters.items():
@@ -72,6 +83,32 @@ async def leaderboard(update, context):
     # Send the leaderboard as a message
     await update.message.reply_text(leaderboard_text)
 
+# Players command handler to show player contributions with trophy emojis for top 3
+async def players(update, context):
+    """Displays the total steps made by each player, with trophies for the top 3 players."""
+    players_text = "🚀Top Players🚀\n\n"
+
+    # Check if there are any contributions yet
+    if not player_contributions:
+        players_text += "There haven't been any players yet!"
+    else:
+        # Sort players by total steps in descending order
+        sorted_players = sorted(player_contributions.items(), key=lambda x: x[1], reverse=True)
+
+        # Add top 3 players with trophy emojis
+        for index, (player, steps) in enumerate(sorted_players):
+            if index == 0:
+                players_text += f"🥇 {player}: {steps} votes\n"  # Gold trophy
+            elif index == 1:
+                players_text += f"🥈 {player}: {steps} votes\n"  # Silver trophy
+            elif index == 2:
+                players_text += f"🥉 {player}: {steps} votes\n"  # Bronze trophy
+            else:
+                players_text += f"{player}: {steps} votes\n"  # No trophy for other players
+
+    # Send the player contributions as a message
+    await update.message.reply_text(players_text)
+
 # Main function to run the bot
 def main():
     # Initialize bot application
@@ -80,6 +117,7 @@ def main():
     # Register command handlers
     application.add_handler(CommandHandler('start', start_game))
     application.add_handler(CommandHandler('leaderboard', leaderboard))  # Add the leaderboard command
+    application.add_handler(CommandHandler('players', players))  # Add the players command
     application.add_handler(CallbackQueryHandler(button_click))
 
     # Start polling to listen for incoming commands and game events
