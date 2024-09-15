@@ -113,16 +113,16 @@ async def players(update, context):
         # Add top 3 players with trophy emojis
         for index, (player, steps) in enumerate(sorted_players):
             if index == 0:
-                players_text += f"🥇 {player}: {steps} votes\n"  # Gold trophy
+                players_text += f"🥇 <a href='https://t.me/{player}'>{player}</a>: {steps} votes\n"  # Gold trophy
             elif index == 1:
-                players_text += f"🥈 {player}: {steps} votes\n"  # Silver trophy
+                players_text += f"🥈 <a href='https://t.me/{player}'>{player}</a>: {steps} votes\n"  # Silver trophy
             elif index == 2:
-                players_text += f"🥉 {player}: {steps} votes\n"  # Bronze trophy
+                players_text += f"🥉 <a href='https://t.me/{player}'>{player}</a>: {steps} votes\n"  # Bronze trophy
             else:
-                players_text += f"{player}: {steps} votes\n"  # No trophy for other players
+                players_text += f"<a href='https://t.me/{player}'>{player}</a>: {steps} votes\n"  # No trophy for other players
 
-    # Send the player contributions as a message
-    await update.message.reply_text(players_text)
+    # Send the player contributions as a message with HTML parsing
+    await update.message.reply_text(players_text, parse_mode='HTML')
 
 # Main function to run the bot
 def main():
@@ -131,8 +131,8 @@ def main():
 
     # Register command handlers
     application.add_handler(CommandHandler('start', start_game))
-    application.add_handler(CommandHandler('leaderboard', leaderboard))  # Add the leaderboard command
-    application.add_handler(CommandHandler('players', players))  # Add the players command
+    application.add_handler(CommandHandler('leaderboard', leaderboard))
+    application.add_handler(CommandHandler('players', players))
     application.add_handler(CallbackQueryHandler(button_click))
 
     # Start polling to listen for incoming commands and game events
