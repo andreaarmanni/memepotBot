@@ -13,7 +13,7 @@ bot = Bot(token=bot_token)
 
 # Game data
 meme_counters = {
-    'tremp': 0,
+    'maga': 0,
     'kama': 0,
     'analos': 0,
     'bome': 0,
@@ -49,7 +49,7 @@ async def start_game(update, context):
 
     # Create game buttons for players to interact
     keyboard = [
-        [InlineKeyboardButton("$TREMP", callback_data='tremp')],
+        [InlineKeyboardButton("$MAGA", callback_data='maga')],
         [InlineKeyboardButton("$KAMA", callback_data='kama')],
         [InlineKeyboardButton("$ANALOS", callback_data='analos')],
         [InlineKeyboardButton("$BOME", callback_data='bome')],
